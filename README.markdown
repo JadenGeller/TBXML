@@ -2,6 +2,10 @@
 
 TBXML is a light-weight XML document parser written in Objective-C designed for use on Apple iPad, iPhone & iPod Touch devices (also Mac OSX compatible). TBXML aims to provide the fastest possible XML parsing whilst utilising the fewest resources. This requirement for absolute efficiency is achieved at the expense of XML validation and modification. It is not possible to modify and generate valid XML from a TBXML object and no validation is performed whatsoever whilst importing and parsing an XML document.
 
+### What is TBXMLArray
+
+TBXMLArray is a class built to work with TBXML providing an array-like interface to an XML node. It implements a `childElementAtIndex:` method making it easy to randomly access elements.
+
 ### Performance
 
 TBXML is incredibly fast! Check out this post for a good comparison of XML parsers. [How To Chose The Best XML Parser for Your iPhone Project](http://www.raywenderlich.com/553/how-to-chose-the-best-xml-parser-for-your-iphone-project "How To Chose The Best XML Parser for Your iPhone Project")
