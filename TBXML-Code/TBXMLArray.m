@@ -12,7 +12,9 @@
 @property (nonatomic) TBXMLElement *currentChild;
 @property (nonatomic) NSString *childName;
 @property (nonatomic) int currentIndex;
-@property (nonatomic) TBXML *document;//needwd or we lose our parent
+
+//holds a reference to the head element to ensure parent isn't deallocated
+@property (nonatomic) TBXML *document;
 
 @end
 
@@ -50,7 +52,7 @@
         return self.currentChild;
     }
     else{
-        [NSException raise:@"JGRangeException" format:@"index %i not within bounds of JGXMLArray", index];
+        [NSException raise:@"RangeException" format:@"index %i not within bounds of TBXMLArray", index];
         return nil;
     }
 }
