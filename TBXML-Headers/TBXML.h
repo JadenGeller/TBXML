@@ -195,9 +195,19 @@ typedef void (^TBXMLIterateAttributeBlock)(TBXMLAttribute *attribute, NSString *
 
 + (TBXMLElement*) nextSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement;
 + (TBXMLElement*) childElementNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement;
++ (TBXMLElement*) previousSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement;
 
 + (TBXMLElement*) nextSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement error:(NSError **)error;
 + (TBXMLElement*) childElementNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement error:(NSError **)error;
++ (TBXMLElement*) previousSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement error:(NSError **)error;
+
++ (TBXMLElement*) firstSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement;
++ (TBXMLElement*) finalSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement;
+
++ (TBXMLElement*) firstChildNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement;
++ (TBXMLElement*) finalChildNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement;
+
++ (int) numberOfChildrenNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement;
 
 /** Iterate through all elements found using query.
  

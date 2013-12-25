@@ -465,6 +465,84 @@
 	return nil;
 }
 
++ (TBXMLElement*) previousSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement{
+    TBXMLElement * xmlElement = aXMLElement->previousSibling;
+	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	while (xmlElement) {
+		if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
+			return xmlElement;
+		}
+		xmlElement = xmlElement->previousSibling;
+	}
+	return nil;
+}
+
++ (TBXMLElement*) previousSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement error:(NSError **)error{
+    // check for nil element
+    if (nil == aXMLElement) {
+        if (error) *error = [TBXML errorWithCode:D_TBXML_ELEMENT_IS_NIL];
+        return nil;
+    }
+    
+    // check for nil name parameter
+    if (nil == aName) {
+        if (error) *error = [TBXML errorWithCode:D_TBXML_PARAM_NAME_IS_NIL];
+        return nil;
+    }
+    
+	TBXMLElement * xmlElement = aXMLElement->previousSibling;
+	const char * name = [aName cStringUsingEncoding:NSUTF8StringEncoding];
+	while (xmlElement) {
+		if (strlen(xmlElement->name) == strlen(name) && memcmp(xmlElement->name,name,strlen(name)) == 0) {
+			return xmlElement;
+		}
+		xmlElement = xmlElement->previousSibling;
+	}
+    
+    if (error) *error = [TBXML errorWithCode:D_TBXML_ELEMENT_NOT_FOUND];
+    
+	return nil;
+}
+
++ (TBXMLElement*) firstSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement{
+    TBXMLElement *sibling = aXMLElement;
+    
+    while (YES) {
+        TBXMLElement *temp = [TBXML previousSiblingNamed:aName searchFromElement:sibling];
+        
+        if (!temp) return sibling; //None left, return the previously iterated one
+        else sibling = temp; //Continue iteration
+    }
+}
+
++ (TBXMLElement*) finalSiblingNamed:(NSString*)aName searchFromElement:(TBXMLElement*)aXMLElement{
+    TBXMLElement *sibling = aXMLElement;
+    
+    while (YES) {
+        TBXMLElement *temp = [TBXML nextSiblingNamed:aName searchFromElement:sibling];
+        
+        if (!temp) return sibling; //None left, return the previously iterated one
+        else sibling = temp; //Continue iteration
+    }
+}
+
++ (TBXMLElement*) firstChildNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
+    return [TBXML childElementNamed:aName parentElement:aParentXMLElement];
+}
+
++ (TBXMLElement*) finalChildNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
+    TBXMLElement *firstChild = [TBXML childElementNamed:aName parentElement:aParentXMLElement];
+    return [TBXML finalSiblingNamed:aName searchFromElement:firstChild];
+}
+
++ (int) numberOfChildrenNamed:(NSString*)aName parentElement:(TBXMLElement*)aParentXMLElement{
+    TBXMLElement *sibling = [TBXML childElementNamed:aName parentElement:aParentXMLElement];
+    int count = 0;
+    //increment count for each sibiling that exists
+    while ((sibling = [TBXML nextSiblingNamed:aName searchFromElement:sibling])) count++;
+    return count;
+}
+
 + (void)iterateElementsForQuery:(NSString *)query fromElement:(TBXMLElement *)anElement withBlock:(TBXMLIterateBlock)iterateBlock {
     
     NSArray *components = [query componentsSeparatedByString:@"."];
